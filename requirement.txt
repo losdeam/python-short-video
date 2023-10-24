@@ -1,0 +1,14 @@
+# python
+numpy
+
+# sdk
+qiniu
+
+# web
+flask
+flask_cors
+redis
+flask_socketio
+
+# video
+opencv-python

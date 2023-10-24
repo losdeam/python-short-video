@@ -1,0 +1,32 @@
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.0/socket.io.js" ></script>
+<script>
+   var socket = io();
+ 
+   console.log("test");
+
+   socket.on('connect', function() {
+        console.log('连接已建立');
+        socket.emit('test', {data: 'hello'});  // 在连接成功后发送消息
+    });
+    socket.emit('test', { message: 'Hello, server!' });
+    socket.on('test', function(message) {
+        console.log('连接已建立');
+        console.log(message);  // 收到服务端发送的数据
+    });
+    
+    socket.on('play',function(json){
+    console.log(json);  //打印接收到的数据
+});
+
+    socket.on('test', function(data) {
+        console.log('连接已建立');
+        console.log(data);  // 收到服务端发送的数据
+    });
+  </script>
+</head>
+<body>
+  <h1>WebSocket Test</h1>
+</body>
+</html>
