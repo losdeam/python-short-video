@@ -29,11 +29,7 @@ def cvRead(img):
     img2 = cv2.imdecode(img2, cv2.IMREAD_COLOR)
     return img2
 
-def combine(frame ,audio):
-    msg = {
-        "frame" : frame,
-        "audio" : audio}
-    return json.dumps(msg)
+
 
 
 def call():
