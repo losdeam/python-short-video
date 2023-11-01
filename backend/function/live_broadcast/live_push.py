@@ -1,10 +1,10 @@
 
 connect = True 
 #视频推流
-def push(data,socket):
+def push(data,flag,socket):
     frame = data['frame']
     audio = data['audio']
-    if connect :
+    if connect and flag:
         socket.emit('push',{"frame":frame,"audio":audio});
 
 # 强制中断
@@ -13,7 +13,7 @@ def force_close(user):
         global connect 
         connect = False 
 
-# 管理员警告（用于制止不良行为）
+# 警告
 def force_warning(user,socket):
     if 1 :
         socket.emit('waring');
