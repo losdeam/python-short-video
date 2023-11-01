@@ -9,9 +9,11 @@ def model_exist(id):
     if id + '_model' in os.listdir("backend/model"):
         return True 
     return False 
+
 # 为用户推荐tag 
 def recommend_tag(user):
     pass 
+
 # 在获取对应tag的视频列表后根据svd来预测，最高值则为推荐视频
 def recommend_video(user):
     id = user['id']
@@ -26,6 +28,7 @@ def recommend_video(user):
         return recommend_cold()
     # 输出uid对iid的预测结果
     print(type(pred))
+
 # 在用户视频栈满后，对用户的推荐模型进行更新
 def recommend_update(user):
     data = dataread()
@@ -44,14 +47,20 @@ def recommend_update(user):
         # 计算RMSE
         accuracy.rmse(predictions, verbose=True)
     dump.dump('./svd_model', algo=algo)
-    pass 
+
+
 # 用户冷启动
 def recommend_cold():
     # 获取热门度最高的且未看过的视频
     pass
+
+
 # 由外部调用的功能整合
 def recommend(user):
     pass 
+
+
+
 hotness_weight = 0.45
 #结合热度进行打分  
 def score_with_hotness(ratings, video_hotness):

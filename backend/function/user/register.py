@@ -1,36 +1,58 @@
 
-from flask import jsonify
 from flask_mail import Message
-from flask import request
 import string
 import random
 import re
-from  time import sleep ,time
-from werkzeug.security import generate_password_hash, check_password_hash
+from  time import sleep 
+from werkzeug.security import generate_password_hash
 
 from .exts import mail
 from function.sql.data_judge import exist 
 from function.sql import upload
 
-
+times = 120 # 验证码保留秒数
 email_dict= {}
 # 获取并发送验证码，并临时建立邮箱与验证码的映射
 def get_email_captcha(email):
     global email_dict
-    print(email_dict)
     # 4/6：随机数组、字母、数组和字母的组合
     source = string.hexdigits*4
     captcha = random.sample(source, 4)
     captcha = "".join(captcha)
     # I/O：Input/Output
-    message = Message(subject="注册验证码", recipients=[email], body=f"您的验证码是:{captcha}")
+    message = Message(subject="注册验证码", recipients=[email], body=f"您的验证码是:{captcha},仅在两分钟内有效")
     mail.send(message)
     email_dict[email] = captcha
-    print(email_dict)
-    sleep(100)
+    sleep(times)
     if email in email_dict:
         del email_dict[email]
+
+def regist(data):
+    '''
+        data:前端返回的json数据
+        data/name :用户名
+        data/password :密码
+        data/email :邮箱
+        data/captcha :验证码
+    '''
+
+    name = data["name"]
+    password = data["password"]
+    email = data["email"]
+    captcha = data["captcha"]
+    if exist(data,"User","usernmae"):
+        return False,"用户名已存在"
+    if email_dict[email] != captcha:
+        return False,"验证码错误"
+    flag,msg = check_password_secure(password)
+    password = generate_password_hash(password)
+    if not flag :
+        return flag,msg 
+    upload({"name":name,"password":password,"email":email,"captcha":captcha},"User")
+    return flag,msg 
     
+
+
 def test():
     print(email_dict)
 
@@ -68,27 +90,3 @@ def check_password_secure(password):
         return  True,"安全性一般的密码"
 
 
-def register(data):
-    '''
-        data:前端返回的json数据
-        data/name :用户名
-        data/password :密码
-        data/email :邮箱
-        data/captcha :验证码
-    '''
-
-    name = data["name"]
-    password = data["password"]
-    email = data["email"]
-    captcha = data["captcha"]
-    if exist(data,"User","usernmae"):
-        return False,"用户名已存在"
-    if email_dict[email] != captcha:
-        return False,"验证码错误"
-    flag,msg = check_password_secure(password)
-    password = generate_password_hash(password)
-    if not flag :
-        return flag,msg 
-    upload({"name":name,"password":password,"email":email,"captcha":captcha},"User")
-    return flag,msg 
-    
