@@ -6,3 +6,9 @@ def get_tag():
 def get_video():
     pass 
 
+
+
+def get_value():
+    '''
+    
+    '''

@@ -52,7 +52,15 @@ def recommend_cold():
 # 由外部调用的功能整合
 def recommend(user):
     pass 
-
+hotness_weight = 0.45
+#结合热度进行打分  
+def score_with_hotness(ratings, video_hotness):
+  scores = []
+  for video_id, rating in ratings:
+    hotness = video_hotness[video_id]
+    score = hotness_weight * hotness + rating
+    scores.append((video_id, score))
+  return scores
     
 def test():
     return os.listdir("backend/model")
