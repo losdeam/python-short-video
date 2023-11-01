@@ -5,22 +5,23 @@ from flask_cors import CORS
 
 # RESTful API
 from flask_restx import Api
-
+from function.user.exts import mail 
 app = Flask(__name__, instance_relative_config=True)
 socketio = SocketIO(app)
 api = Api(app, version='1.0', title='ShortVideo  API', description='短视频后端接口文档')
+
 def create_app():
     # 跨域
     CORS(app, supports_credentials=True)
 
     # 从 config.py 文件中读取配置
     app.config.from_pyfile('flask_config.py')    
-
+    mail.init_app(app)
     # 导入并注册命名空间
-    from . import video,live,uesr
+    from . import video,live,user
     api.add_namespace(video.api)
     api.add_namespace(live.api)
-    api.add_namespace(uesr.api)
+    api.add_namespace(user.api)
 
 
 
