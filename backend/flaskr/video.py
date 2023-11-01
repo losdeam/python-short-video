@@ -1,6 +1,6 @@
 # RESTful API
 from flask_restx import Namespace, Resource, fields
-from function.video.video_upload import upload
+from function.video.video_upload import upmeiload
 from function.recommendation.recommendation import test,recommend_tag,recommend_video
 from flask import request
 import time 
