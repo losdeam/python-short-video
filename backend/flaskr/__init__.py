@@ -17,9 +17,10 @@ def create_app():
     app.config.from_pyfile('flask_config.py')    
 
     # 导入并注册命名空间
-    from . import video,live
+    from . import video,live,uesr
     api.add_namespace(video.api)
     api.add_namespace(live.api)
+    api.add_namespace(uesr.api)
 
 
 
