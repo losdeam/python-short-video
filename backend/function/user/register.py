@@ -16,7 +16,7 @@ email_dict= {}
 def get_email_captcha(email):
     global email_dict
     # 4/6：随机数组、字母、数组和字母的组合
-    source = string.hexdigits*4
+    source = (string.digits+string.ascii_uppercase)*4
     captcha = random.sample(source, 4)
     captcha = "".join(captcha)
     # I/O：Input/Output
@@ -42,6 +42,8 @@ def regist(data):
     captcha = data["captcha"]
     if exist(data,"User","usernmae"):
         return False,"用户名已存在"
+    if exist(data,"User","email "):
+        return False,"该邮箱已被注册"
     if email_dict[email] != captcha:
         return False,"验证码错误"
     flag,msg = check_password_secure(password)
@@ -87,7 +89,8 @@ def check_password_secure(password):
         return  False,"密码不能是常见密码或连续数字"
     if score >= 45:
         return  True,"非常安全的密码"
-    elif score >= 30:
+    elif score >= 28:
         return  True,"安全性一般的密码"
+
 
 
