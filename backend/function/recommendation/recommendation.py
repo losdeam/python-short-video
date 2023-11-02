@@ -4,6 +4,8 @@ from surprise import accuracy,dump,SVD
 from surprise.model_selection import KFold
 from .data_processing import dataread
 import os 
+
+
 # 检验模型是否存在（冷启动判断）
 def model_exist(id):
     if id + '_model' in os.listdir("backend/model"):

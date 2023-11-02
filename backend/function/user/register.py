@@ -27,20 +27,32 @@ def get_email_captcha(email):
     if email in email_dict:
         del email_dict[email]
 
-def regist(data):
+def regist(request):
+    '''通过输入的用户信息来进行用户注册\n
+    input:\n
+        request:前端返回的json数据
+        request/name :用户名
+        request/password :密码
+        request/email :邮箱
+        request/captcha :验证码
+    output:\n
+        data : josn文件\n
+        data/ret : 状态码\n
+        data/info : 具体信息(str)\n
     '''
-        data:前端返回的json数据
-        data/name :用户名
-        data/password :密码
-        data/email :邮箱
-        data/captcha :验证码
     '''
 
-    name = data["name"]
-    password = data["password"]
-    email = data["email"]
-    captcha = data["captcha"]
-    if exist(data,"User","usernmae"):
+    '''
+    data = {}
+
+    name = request["name"]
+    password = request["password"]
+    email = request["email"]
+    captcha = request["captcha"]
+
+
+    if exist(name,"User","usernmae"):
+        data["flag"] = []
         return False,"用户名已存在"
     if email_dict[email] != captcha:
         return False,"验证码错误"

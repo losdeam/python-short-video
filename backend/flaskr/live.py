@@ -17,21 +17,21 @@ class live_create(Resource):
     def post(self):
         data = request.get_json() 
         return create(data)
-# 生成上传所需的token
+
 @api.route('/live_close')
 class live_close(Resource):
     @api.doc(description='主播，关闭直播间')
     def post(self):
         data = request.get_json() 
         return close(data,socketio)
-# 生成上传所需的token
+
 @api.route('/live_join')
 class live_join(Resource):
     @api.doc(description='观众，进入直播间')
     def post(self):
         data = request.get_json() 
         return join(data)
-# 生成上传所需的token
+
 @api.route('/live_leave')
 class live_leave(Resource):
     @api.doc(description='观众，离开直播间')

@@ -6,13 +6,15 @@ from flask_cors import CORS
 # RESTful API
 from flask_restx import Api
 from function.user.exts import mail 
-app = Flask(__name__, instance_relative_config=True)
-socketio = SocketIO(app)
-api = Api(app, version='1.0', title='ShortVideo  API', description='短视频后端接口文档')
 
 def create_app():
+    global socketio
+    app = Flask(__name__, instance_relative_config=True)
     # 跨域
     CORS(app, supports_credentials=True)
+   
+    socketio = SocketIO(app)
+    api = Api(app, version='1.0', title='ShortVideo  API', description='短视频后端接口文档')
 
     # 从 config.py 文件中读取配置
     app.config.from_pyfile('flask_config.py')    

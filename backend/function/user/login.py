@@ -3,6 +3,14 @@ from werkzeug.security import check_password_hash
 from flask import session
 
 def login_(data):
+    '''通过视频的名称来获取对应的token\n
+    input:\n
+        name  :  视频的名称\n
+    output:\n
+        data : josn文件\n
+        data/ret : 状态码\n
+        data/info : 具体信息(str)\n
+    '''
     email = data["email"]
     password = data["password"]
     user = get_value(email,"email","User")
