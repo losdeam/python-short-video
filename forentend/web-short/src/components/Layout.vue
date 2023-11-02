@@ -26,8 +26,9 @@
                 <div class="body-right_playerarea">
                     <div class="videoarea">
                         <div class="video-content">
-                            <video-player :options="videoOptions"/>
-                            <video-player :options="videoOptions"/>
+                            <!-- <video-player :options="videoOptions"/>  -->
+                            <switchvideo></switchvideo>
+
                         </div>
                     </div>
                 </div>
@@ -38,10 +39,12 @@
 </template>
 <script>
 import VideoPlayer from '@/components/VideoPlayer.vue';
+import switchvideo from './switchvideo.vue';
 export default {
   name: 'VideoExample',
   components: {
     VideoPlayer,
+    switchvideo,
   },
   data() {
     return {
