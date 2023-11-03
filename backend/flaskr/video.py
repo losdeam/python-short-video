@@ -1,7 +1,7 @@
 # RESTful API
 from flask_restx import Namespace, Resource, fields
 from function.video import uploads
-from function.video.qiniu import upload,exist,get_token,verify,delete
+from function.video.qiniu import upload,exist,get_token,verify,delete,get
 from function.recommendation.recommendation import test,recommend_tag,recommend_video
 from flask import request
 import time 
@@ -15,6 +15,10 @@ parser.add_argument('name', type=str, help='名称')
 video = api.parser()
 video.add_argument('name', type=str, help='名称')
 video.add_argument('video', type=str, help='视频文件')
+
+get_ = api.parser()
+get_.add_argument('prefix', type=str, help='视频前缀')
+get_.add_argument('bucket_name', type=str, help='储存空间名')
 
 # get的视频链接获取接口
 @api.route('/test_1')
@@ -83,8 +87,6 @@ class verify_(Resource):
         name = args['name']
         return verify(name)
 
-
-
 @api.route('/delete')
 class delete_(Resource):
     @api.expect(parser)
@@ -93,4 +95,14 @@ class delete_(Resource):
         args = parser.parse_args()
         name = args['name']
         return delete(name)
+    
+@api.route('/search')
+class get_video(Resource):
+    @api.expect(get_)
+    @api.doc(description='搜索对应空间中所有具有所给前缀的文件')
+    def post(self):
+        args = get_.parse_args()
+        prefix = args['prefix']
+        bucket_name  = args['bucket_name']
+        return get(prefix,bucket_name)
     

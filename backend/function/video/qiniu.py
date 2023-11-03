@@ -123,6 +123,7 @@ def delete(name,bucketname):
     '''
     ret, info = bucket.delete(bucketname, name)
     data = {}
+
     if ret:
         data["code"] = 200
         data["info"] = "删除成功"
@@ -130,3 +131,34 @@ def delete(name,bucketname):
         data["code"] = 404
         data["info"] = "该名称在储存空间中不存在"
     return  data , data["code"]
+
+def get(prefix,buckets):
+    '''根据前缀查询对应空间中的视频\n
+    input:\n
+        prefix  :  视频前缀名\n
+        bucketname : 储存空间名称（1为正式空间，0为中转空间）\n
+    output:\n    
+        data : josn文件\n
+        data/code : 状态码\n
+        data/info : 具体信息(str)\n
+        code : 状态码\n
+    '''
+    data = {}
+    if buckets == 1  : 
+        bucket_ = bucket_name
+    else:
+        bucket_ = temp_bucket
+    # 前缀
+    prefix = prefix
+    # 列举条目
+    limit = 10
+    # 列举出除'/'的所有文件以及以'/'为分隔的所有前缀
+    delimiter = "_"
+    # 标记
+    marker = None
+
+    ret, _, _ = bucket.list(bucket_, prefix, marker, limit, delimiter)
+    data["ret"] = ret 
+    data["code"] = 200
+    data["bucket"] = bucket_
+    return data,data["code"] 

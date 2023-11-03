@@ -10,8 +10,8 @@ from .exts import mail
 from function.sql.data_judge import exist 
 from function.sql import upload
 
-
-times = 300 # 验证码保留秒数
+event = None 
+times = 15 # 验证码保留秒数
 email_dict= {"test":"1234"}
 # 获取并发送验证码，并临时建立邮箱与验证码的映射
 def get_email_captcha(email):
@@ -36,19 +36,32 @@ def get_email_captcha(email):
         data["msg"] = "验证码发送失败，请检查邮箱是否存在"
         return data ,data["code"]
     email_dict[email] = captcha
-    
-    
     data["code"] = 200
     data["msg"] =  "验证码发送成功"
 
-    thread = threading.Thread(target=captcha_sleep,args=(email,))
-    thread.start()
+    global event
+    if event:
+        event.set() # 终止旧线程
+
+    event = threading.Event() 
+    new_thread = threading.Thread(target=captcha_sleep, args=(email, event))
+    new_thread.start()
+
     return data ,data["code"]
 
-def  captcha_sleep(email):
-    sleep(times)
+def  captcha_sleep(email,event):
+    '''在休眠一定时间后在全局变量email_dict中删除\n
+    input:\n
+        email:用户输入的邮箱\n
+    output:\n
+        None
+    '''
+    sleep(times) # 模拟sleep
+    if event.is_set():
+        return
     if email in email_dict:
         del email_dict[email]
+
     
 def regist(request):
     '''通过输入的用户信息来进行用户注册\n
