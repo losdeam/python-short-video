@@ -1,7 +1,7 @@
 # RESTful API
 from flask_restx import Namespace, Resource, fields
 from function.video import uploads
-from function.video.qiniu import upload,exist,get_token
+from function.video.qiniu import upload,exist,get_token,verify,delete
 from function.recommendation.recommendation import test,recommend_tag,recommend_video
 from flask import request
 import time 
@@ -73,3 +73,24 @@ class upload(Resource):
 class recommend(Resource):
     def post(self,data):
         return 
+    
+@api.route('/verify')
+class verify_(Resource):
+    @api.expect(parser)
+    @api.doc(description='审核员对中转站的视频进行审核')
+    def post(self):
+        args = parser.parse_args()
+        name = args['name']
+        return verify(name)
+
+
+
+@api.route('/delete')
+class delete_(Resource):
+    @api.expect(parser)
+    @api.doc(description='具有权限的用户删除对应空间中的视频')
+    def post(self):
+        args = parser.parse_args()
+        name = args['name']
+        return delete(name)
+    

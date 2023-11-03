@@ -1,4 +1,4 @@
-from qiniu import Auth
+from qiniu import Auth,BucketManager
 #需要填写你的 Access Key 和 Secret Key
 access_key = 'JBmGTOlz7n8YQ4UQ3uqXvAEo9A9dMaw1eC1VOBKw'
 secret_key = 'd_Wf18TVRIq1NouNvqYIwFngaV90gxiEi26YxyLw'
@@ -8,8 +8,7 @@ q = Auth(access_key, secret_key)
 bucket_name = 'zeros'
 # 暂存的空间
 temp_bucket = "zerotemp"
-
-
+bucket = BucketManager(q)
 #设置转码参数
 fops = 'avthumb/mp4/s/640x360/vb/1.25m'
 #转码是使用的队列名称
