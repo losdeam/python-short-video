@@ -26,9 +26,8 @@
                 <div class="body-right_playerarea">
                     <div class="videoarea">
                         <div class="video-content">
-                            <!-- <video-player :options="videoOptions"/>  -->
-                            <switchvideo></switchvideo>
-
+                            <video-player :options="videoOptions"/> 
+                            <video-player :options="videoOptions"/> 
                         </div>
                     </div>
                 </div>
@@ -39,25 +38,25 @@
 </template>
 <script>
 import VideoPlayer from '@/components/VideoPlayer.vue';
-import switchvideo from './switchvideo.vue';
+
+// import switchvideo from './switchvideo.vue';
 export default {
   name: 'VideoExample',
   components: {
     VideoPlayer,
-    switchvideo,
   },
   data() {
     return {
       videoOptions: {
         autoplay: false,
         controls: true,
-        sources: [
-          {
-            src:
-              'http://s360yyqhm.hn-bkt.clouddn.com/1.mp4',
-              type: 'video/mp4',
-          }
-        ]
+        // sources: [
+        //   {
+        //     src:
+        //       'http://s360yyqhm.hn-bkt.clouddn.com/1.mp4',
+        //       type: 'video/mp4',
+        //   }
+        // ]
       }
     };
   }
@@ -71,7 +70,7 @@ export default {
     display: flex;
     flex: 1;
     flex-direction: row;
-    height: 100vh;
+    height: 100%;
     width: 100%;
     
 }
