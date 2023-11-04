@@ -6,6 +6,8 @@ from flask_restx import Api
 # 导入需要初始化的组件
 from flaskr.extensions import db, socketio
 
+from function.user.exts import mail
+
 
 def create_app():
     # 创造并配置app, instance_relative_config=True表示配置文件是相对于instance folder的相对路径
@@ -27,12 +29,14 @@ def create_app():
     # 初始化socketio
     socketio.init_app(app)
 
+    # 初始化mail
+    mail.init_app(app)
     # 导入并注册命名空间
-    from . import video, live, uesr, database
+    from . import video, live, user, database
     api.add_namespace(database.api)
     api.add_namespace(video.api)
     api.add_namespace(live.api)
-    api.add_namespace(uesr.api)
+    api.add_namespace(user.api)
 
     if __name__ == "__main__":
         socketio.run(app, debug=True, host="0.0.0.0", port=50000,
