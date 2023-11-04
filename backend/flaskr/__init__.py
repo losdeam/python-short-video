@@ -1,33 +1,45 @@
-from flask import Flask, render_template
-from flask_socketio import SocketIO
+from flask import Flask
 # 跨域
 from flask_cors import CORS
-
 # RESTful API
 from flask_restx import Api
-from function.user.exts import mail 
+# 导入需要初始化的组件
+from flaskr.extensions import db, socketio
+
+from function.user.exts import mail
+
 
 def create_app():
-    global socketio
+    # 创造并配置app, instance_relative_config=True表示配置文件是相对于instance folder的相对路径
     app = Flask(__name__, instance_relative_config=True)
+
+    # RESTful API
+    api = Api(app, version='1.0', title='ShortVideo  API',
+              description='短视频后端接口文档', prefix='/api')
+
     # 跨域
     CORS(app, supports_credentials=True)
-   
-    socketio = SocketIO(app)
-    api = Api(app, version='1.0', title='ShortVideo  API', description='短视频后端接口文档')
 
     # 从 config.py 文件中读取配置
-    app.config.from_pyfile('flask_config.py')    
+    app.config.from_pyfile('config.py')
+
+    # 初始化数据库
+    db.init_app(app)
+
+    # 初始化socketio
+    socketio.init_app(app)
+
+    # 初始化mail
     mail.init_app(app)
     # 导入并注册命名空间
-    from . import video,live,user
+    from . import video, live, user, database
+    api.add_namespace(database.api)
     api.add_namespace(video.api)
     api.add_namespace(live.api)
     api.add_namespace(user.api)
 
-
-
     if __name__ == "__main__":
-        app.run(debug=True, host="0.0.0.0", port=50000)
+        socketio.run(app, debug=True, host="0.0.0.0", port=50000,
+                     use_reloader=True, log_output=True)
 
-    return app,socketio
+    return app
