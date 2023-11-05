@@ -2,8 +2,9 @@
 <template>
   <!-- <div class="windows"> -->
 
-    <layout></layout>
-    <VideoSwitch></VideoSwitch>
+    <!-- <layout></layout>
+    <VideoSwitch></VideoSwitch> -->
+    <Signin></Signin>
     <!-- <div class="videoarea">
       <div class="video-content">
         <video-player :options="videoOptions"/>
@@ -17,11 +18,13 @@
 import VideoPlayer from '@/components/VideoPlayer.vue';
 import Layout from './components/Layout.vue';
 import VideoSwitch from './components/VideoSwitch.vue';
+import Signin from './components/Signin.vue';
 
 export default {
   components: {
     Layout,
     VideoSwitch,
+    Signin,
   },
   data() {
     return {
