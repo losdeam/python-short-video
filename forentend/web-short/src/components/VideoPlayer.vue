@@ -7,11 +7,13 @@
       <!-- <video ref="videoPlayer" class="video-js">
         <source src="/src/assets/naitang.mp4" type="video/mp4" />
       </video> -->
+      <button @click="click_switch"></button>
     </div>
   </template>
   
   <script>
-  import videojs from 'video.js';
+  
+import videojs from 'video.js';
   
   export default {
     name: 'VideoPlayer',
@@ -39,17 +41,24 @@
       }
     },
 
-    methods(){
-
+    methods:{
+      click_switch(){
+        console.log(2)
+        
+      }
     },
   }
   </script>
 
 <style scoped>
 .video-js{
-  width: 400px;
-  height: 400px;
+  width: 700px;
+  height: 500px;
   
+}
+button{
+  height: 50px;
+  width: 100px;
 }
 </style>
 

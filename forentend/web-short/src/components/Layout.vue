@@ -30,6 +30,7 @@
                             <video-player :options="videoOptions"/> 
                         </div>
                     </div>
+                    <button class="bu" @click="Click"></button>
                 </div>
                 <div class="switchbutton"></div>
             </div>
@@ -38,6 +39,7 @@
 </template>
 <script>
 import VideoPlayer from '@/components/VideoPlayer.vue';
+
 
 // import switchvideo from './switchvideo.vue';
 export default {
@@ -59,7 +61,14 @@ export default {
         // ]
       }
     };
-  }
+  },
+methods:{
+    Click(){
+        console.log(1)
+    }
+    
+}
+
 };
 </script>
 <style scoped>
@@ -126,6 +135,12 @@ width: 100%;
       align-items: center;
       margin: 20px;
       }
+
+
+button{
+    height: 100px;
+    width: 100px;
+}      
 body{
     margin: 0;
     padding: 0;
