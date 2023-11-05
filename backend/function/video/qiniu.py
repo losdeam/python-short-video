@@ -1,8 +1,8 @@
-from qiniu import etag, put_data, urlsafe_base64_encode
-from instance.qny_cofig import q, bucket_name, pipeline, fops, temp_bucket, bucket
+
+from instance.qny_config import q, bucket_name, pipeline, fops, temp_bucket, bucket
+from qiniu import etag, put_data, urlsafe_base64_encode,put_file
 from flask import jsonify
 import json
-
 
 def get_token(name):
     '''通过视频的名称来获取对应的token\n
@@ -18,7 +18,7 @@ def get_token(name):
     data = {}
     # 上传后保存的文件名
     key = name
-    ret, response = exist(name)
+    ret, response = exist(name, temp_bucket)
     data["ret"] = ret["ret"]
     if response == 404:
         # 生成上传 Token，可以指定过期时间等
@@ -44,23 +44,20 @@ def upload(name, video):
         code : 状态码\n
     '''
     data = {}
-    if not exist(name):
-        # 生成上传 Token，可以指定过期时间等
-        fops = fops
+    if not exist(name, temp_bucket):
         # 可以对转码后的文件进行使用saveas参数自定义命名，当然也可以不指定文件会默认命名并保存在当前空间
         saveas_key = urlsafe_base64_encode(f'{temp_bucket}:{name}')
-        fops = fops+'|saveas/'+saveas_key
+        fop = fops+'|saveas/'+saveas_key
         # 在上传策略中指定
         policy = {
-            'persistentOps': fops,
+            'persistentOps': fop,
             'persistentPipeline': pipeline
         }
         token = q.upload_token(bucket_name, name, 3600, policy)
-        ret, info = put_data(token, name, video, version='v2')
-        data["ret"] = ret
+        # ret, info = put_data(token, name, video)
+        data["ret"] = None
         data["code"] = 200
-        data["info"] = info
-
+        data["info"] = "上传成功"
     else:
         data["ret"] = None
         data["code"] = 404
@@ -68,7 +65,7 @@ def upload(name, video):
     return jsonify(data), data["code"]
 
 
-def exist(name):
+def exist(name, buckets):
     '''验证该名称在储存空间中是否已经存在\n
     input:\n
         name  :  视频的名称\n
@@ -80,8 +77,7 @@ def exist(name):
         code : 状态码\n
     '''
     data = {}
-
-    ret, info = bucket.stat(bucket_name, name)
+    ret, info = bucket.stat(buckets, name)
     data["ret"] = ret
     if ret:
         data["code"] = 200
@@ -126,12 +122,47 @@ def delete(name, bucketname):
         data/info : 具体信息(str)\n
         code : 状态码\n
     '''
-    ret, info = bucket.delete(bucketname, name)
     data = {}
-    if ret:
+    _, ret = exist(name, bucketname)
+    if ret == 200:
+        ret, info = bucket.delete(bucketname, name)
+        print(ret, info)
         data["code"] = 200
         data["info"] = "删除成功"
     else:
         data["code"] = 404
         data["info"] = "该名称在储存空间中不存在"
+    print(data)
+    return data, data["code"]
+
+
+def get(prefix, buckets):
+    '''根据前缀查询对应空间中的视频\n
+    input:\n
+        prefix  :  视频前缀名\n
+        bucketname : 储存空间名称（1为正式空间，0为中转空间）\n
+    output:\n    
+        data : josn文件\n
+        data/code : 状态码\n
+        data/info : 具体信息(str)\n
+        code : 状态码\n
+    '''
+    data = {}
+    if buckets == 1:
+        bucket_ = bucket_name
+    else:
+        bucket_ = temp_bucket
+    # 前缀
+    prefix = prefix
+    # 列举条目
+    limit = 10
+    # 列举出除'/'的所有文件以及以'/'为分隔的所有前缀
+    delimiter = "_"
+    # 标记
+    marker = None
+
+    ret, _, _ = bucket.list(bucket_, prefix, marker, limit, delimiter)
+    data["ret"] = ret
+    data["code"] = 200
+    data["bucket"] = bucket_
     return data, data["code"]

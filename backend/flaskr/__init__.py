@@ -28,9 +28,9 @@ def create_app():
     login_manager.init_app(app)
 
     # 导入并注册命名空间
-    from . import live, database, auth
+    from . import live, database, auth, video_manage
     api.add_namespace(database.api)
-    # api.add_namespace(video.api)
+    api.add_namespace(video_manage.api)
     api.add_namespace(live.api)
     api.add_namespace(auth.api)
 

@@ -1,2 +1,2 @@
-from .register import test,regist,get_email_captcha
-from .login import login_
+from .register import test_captcha, regist, get_email_captcha
+from .login import login_man

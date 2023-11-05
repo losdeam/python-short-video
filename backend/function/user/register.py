@@ -6,9 +6,9 @@ import threading
 from time import sleep
 from werkzeug.security import generate_password_hash
 from flaskr.extensions import mail
-from function.sql import exist, upload
+from function.sql import get_value, upload_data
 
-
+event = None
 times = 300  # 验证码保留秒数
 email_dict = {"test": "1234"}
 # 获取并发送验证码，并临时建立邮箱与验证码的映射
@@ -37,17 +37,30 @@ def get_email_captcha(email):
         data["msg"] = "验证码发送失败，请检查邮箱是否存在"
         return data, data["code"]
     email_dict[email] = captcha
-
     data["code"] = 200
     data["msg"] = "验证码发送成功"
 
-    thread = threading.Thread(target=captcha_sleep, args=(email,))
-    thread.start()
+    global event
+    if event:
+        event.set()  # 终止旧线程
+
+    event = threading.Event()
+    new_thread = threading.Thread(target=captcha_sleep, args=(email, event))
+    new_thread.start()
+
     return data, data["code"]
 
 
-def captcha_sleep(email):
-    sleep(times)
+def captcha_sleep(email, event):
+    '''在休眠一定时间后在全局变量email_dict中删除\n
+    input:\n
+        email:用户输入的邮箱\n
+    output:\n
+        None
+    '''
+    sleep(times)  # 模拟sleep
+    if event.is_set():
+        return
     if email in email_dict:
         del email_dict[email]
 
@@ -73,11 +86,11 @@ def regist(request):
     captcha = request["captcha"]
 
     data = {}
-    if exist(name, "user", "username"):
+    if get_value(name, "username", "user"):
         data["code"] = 400
         data["msg"] = "用户名已存在"
         return data, data["code"]
-    if exist(email, "user", "email"):
+    if get_value(email, "email", "user"):
         data["code"] = 401
         data["msg"] = "该邮箱已被注册"
         return data, data["code"]
@@ -97,14 +110,14 @@ def regist(request):
         data["code"] = flag
         data["msg"] = msg
         return data, 403
-    upload({"username": name, "password": password,
-           "email": email}, "user")
+    upload_data({"username": name, "password": password,
+                 "email": email}, "user")
     data["code"] = 200
     data["msg"] = "注册成功"
     return data, 200
 
 
-def test():
+def test_captcha():
     return email_dict
 
 

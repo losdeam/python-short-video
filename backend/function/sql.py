@@ -2,26 +2,7 @@ from flaskr.extensions import db
 from flaskr.models import User, Video
 
 
-def exist(data, sheet, key):
-    '''
-    检测data是否存在于sheet表中的key字段中
-    '''
-    if sheet == 'user':
-        stmt = db.select(User).where(getattr(User, key) == data)
-    elif sheet == 'video':
-        stmt = db.select(Video).where(getattr(Video, key) == data)
-    else:
-        raise AttributeError("sheet name error")
-
-    flag = db.session.execute(stmt).scalar_one_or_none()
-
-    if flag is None:
-        return False
-
-    return True
-
-
-def upload(data, sheet):
+def upload_data(data, sheet):
     '''
     data:dict
     sheet:str
@@ -53,7 +34,36 @@ def get_video():
 
 def get_value(data, key, sheet):
     '''
+    根据所给的data值在sheet的key字段中寻找一条记录
+    return : 字典格式的记录,不存在则返回None
+    '''
+    if sheet == 'user':
+        stmt = db.select(User).where(getattr(User, key) == data)
+    elif sheet == 'video':
+        stmt = db.select(Video).where(getattr(Video, key) == data)
+    else:
+        raise AttributeError("sheet name error")
+
+    result = db.session.execute(stmt).scalar_one_or_none()
+
+    return result
+
+
+def get_values(data, key, sheet):
+    '''
     根据所给的data值在sheet的key字段中寻找所有符合的记录
     return : 字典格式的记录,不存在则返回None
     '''
-    pass
+    if sheet == 'user':
+        stmt = db.select(User).where(getattr(User, key) == data)
+    elif sheet == 'video':
+        stmt = db.select(Video).where(getattr(Video, key) == data)
+    else:
+        raise AttributeError("sheet name error")
+
+    result = db.session.execute(stmt).scalars().all()
+
+    if result:
+        return result
+    else:
+        return None
