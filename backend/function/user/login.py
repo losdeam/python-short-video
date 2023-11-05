@@ -1,6 +1,7 @@
-from function.sql.data_get import get_value 
+from function.sql import get_value
 from werkzeug.security import check_password_hash
 from flask import session
+
 
 def login_(data):
     '''通过输入的用户信息来进行用户登录\n
@@ -17,7 +18,7 @@ def login_(data):
     data = {}
     email = data["email"]
     password = data["password"]
-    user = get_value(email,"email","User")
+    user = get_value(email, "email", "User")
     if not user:
         return "未找到邮箱，请检测输入是否有误"
     if check_password_hash(user.password, password):
@@ -26,4 +27,3 @@ def login_(data):
         return "登录成功"
     else:
         return "密码错误"
-
