@@ -64,7 +64,6 @@ def captcha_sleep(email, event):
     if email in email_dict:
         del email_dict[email]
 
-
 def regist(request):
     '''通过输入的用户信息来进行用户注册\n
     input:\n

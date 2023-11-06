@@ -7,7 +7,13 @@ def pre(user, name):
     return user + name
 
 
+def upload_(user, video, name):
+    name = pre(user, name)
+    return upload(name, video)
+
+
 def exist_(user, name, buckets):
+    name = pre(user, name)
     return exist(name, buckets)
 
 
@@ -26,7 +32,7 @@ def delete_(user, name, bucketname):
     return delete(name, bucketname)
 
 
-def get_(user, prefix, buckets):
+def get_(id, prefix, buckets):
     return get(prefix, buckets)
 
 

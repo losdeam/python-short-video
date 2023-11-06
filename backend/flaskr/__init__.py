@@ -22,21 +22,21 @@ def create_app():
     app.config.from_pyfile('config.py')
 
     # 初始化各种组件
-    db.init_app(app)
+    # db.init_app(app)
     socketio.init_app(app)
     mail.init_app(app)
     login_manager.init_app(app)
     redis_client.init_app(app)
 
     # 导入并注册命名空间
-    from . import live, database, auth, video_manage
-    api.add_namespace(database.api)
+    from . import live,  auth, video_manage
+    # api.add_namespace(database.api)
     api.add_namespace(video_manage.api)
     api.add_namespace(live.api)
     api.add_namespace(auth.api)
 
-    if __name__ == "__main__":
-        socketio.run(app, debug=True, host="0.0.0.0", port=50000,
+    # if __name__ == "__main__":
+    socketio.run(app, debug=True, host="0.0.0.0", port=50000,
                      use_reloader=True, log_output=True)
 
     return app
