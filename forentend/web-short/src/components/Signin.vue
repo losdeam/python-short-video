@@ -17,15 +17,17 @@
     <div id="background">
         <div class="container">
             <form action="">
-              <h1>Login</h1>
+              <h1>用户登录</h1>
               <div class="form">
                   <div class="item">
-                    <label>用户名：</label><input type="text" name="username" v-model.trim="name" placeholder="请输入用户名">
+                    <label>用户名：</label>
+                    <input type="text" name="username" v-model.trim="name" placeholder="请输入用户名">
                     <!-- v-model把输入的值传输给name变量 -->
                     <br/>
                   </div>
                   <div class="item">
-                    <label>密码：</label><input type="password" name="password" v-model.trim="password" placeholder="请输入密码">
+                    <label>密码：</label>
+                    <input type="password" name="password" v-model.trim="password" placeholder="请输入密码">
                     <br/>
                   </div>
                   <div class="keep">
@@ -42,7 +44,6 @@
         </div>
     </div>
     </template>
-    //css
     <style scoped>
     #background{
         width: 100%;
@@ -86,20 +87,21 @@
     input{
       margin-left: -5px;
       padding: 4px;
-      border: solid 1px #4e5ef3;
+      border: solid 1px ;
       outline: 0;
       font: normal 13px/100% Verdana,Tahoma,sans-serif;
       width: 200px;
       height: 23px;
       background:#f1f1f190;
       box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
+      border-radius: 8px;
     }
     button{
       position: relative;
       height: 33px;
       width: 100px;
-      background: rgba(35, 19, 252, 0.425);
-      border-radius: 10px;
+      background: rgba(148, 141, 235, 0.425);
+      border-radius: 5px;
       margin-top: 18px;
       box-shadow: none;
       color: white;

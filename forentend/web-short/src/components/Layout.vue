@@ -9,7 +9,7 @@
                     <div class="leftbar-items front">推 荐</div>
                     <div class="leftbar-items">热 点</div>
                     <div class="leftbar-items">体 育</div>
-                    <div class="leftbar-items">娱 乐</div>
+                    <div class="leftbar-items">动 漫</div>
                     <div class="leftbar-items">游 戏</div>
                     <div class="leftbar-items">科 技</div>
                 </div>
@@ -65,6 +65,7 @@ export default {
 methods:{
     Click(){
         console.log(1)
+        
     }
     
 }
