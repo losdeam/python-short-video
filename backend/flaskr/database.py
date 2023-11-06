@@ -1,6 +1,6 @@
 from flask_restx import Namespace, Resource    # RESTful API
 from flaskr.extensions import db       # 导入数据库
-import flaskr.models  # 务必导入模型,不然db语句无法知道模型,也就不能创建表
+import flaskr.models  # 务必导入模型
 
 api = Namespace('database', description='数据库操作接口')
 
@@ -9,9 +9,9 @@ api = Namespace('database', description='数据库操作接口')
 class Create(Resource):
     @api.doc(description='创建数据库,只用执行一次。重复执行视为测试数据库连接')
     def get(self):
-        """
+        '''
         创建数据库
-        """
+        '''
         try:
             db.create_all()
             return 200

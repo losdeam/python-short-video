@@ -1,8 +1,9 @@
 from flaskr.extensions import db
+from flask_login import UserMixin
 from datetime import datetime
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     """
     用户表
     """
@@ -10,7 +11,15 @@ class User(db.Model):
     username = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(128), nullable=False)
+    rank = db.Column(db.Integer, nullable=False, default=1)
     avatar = db.Column(db.LargeBinary)
+
+    def get_id(self):
+        try:
+            return self.user_id
+        except AttributeError:
+            raise NotImplementedError(
+                'No `id` attribute - override `get_id`') from None
 
 
 class Video(db.Model):

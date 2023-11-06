@@ -99,3 +99,4 @@ class delete_(Resource):
         args = parser.parse_args()
         name = args['name']
         return delete(name)
+
