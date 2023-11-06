@@ -18,6 +18,7 @@ def get_token(name):
     data = {}
     # 上传后保存的文件名
     key = name
+    
     ret, response = exist(name, temp_bucket)
     data["ret"] = ret["ret"]
     if response == 404:
@@ -44,7 +45,8 @@ def upload(name, video):
         code : 状态码\n
     '''
     data = {}
-    if not exist(name, temp_bucket):
+    ret, info = bucket.stat(temp_bucket, name)
+    if not ret:
         # 可以对转码后的文件进行使用saveas参数自定义命名，当然也可以不指定文件会默认命名并保存在当前空间
         saveas_key = urlsafe_base64_encode(f'{temp_bucket}:{name}')
         fop = fops+'|saveas/'+saveas_key
@@ -54,8 +56,8 @@ def upload(name, video):
             'persistentPipeline': pipeline
         }
         token = q.upload_token(bucket_name, name, 3600, policy)
-        # ret, info = put_data(token, name, video)
-        data["ret"] = None
+        ret, info = put_data(token, name, video) 
+        data["ret"] = ret
         data["code"] = 200
         data["info"] = "上传成功"
     else:
@@ -76,13 +78,14 @@ def exist(name, buckets):
         data/info : 具体信息(str)\n
         code : 状态码\n
     '''
+
+    bucketname,private_url = find_url(name, buckets)
     data = {}
-    ret, info = bucket.stat(buckets, name)
+    ret, info = bucket.stat(bucketname, name)
     data["ret"] = ret
     if ret:
         data["code"] = 200
-        data["info"] = "该名称在储存空间中已经存在"
-
+        data["info"] = private_url
     else:
         data["code"] = 404
         data["info"] = "该名称在储存空间中不存在"
@@ -99,23 +102,25 @@ def verify(name):
         data/info : 具体信息(str)\n
         code : 状态码\n
     '''
-
-    ret, info = bucket.move(temp_bucket, name, bucket_name, name)
+    ret, info = bucket.stat(temp_bucket, name)
+    
     data = {}
-    if ret:
-        ret, info = bucket.delete(temp_bucket, name)
+    if ret :
+        ret, info = bucket.move(temp_bucket, name, bucket_name, name)
         data["code"] = 200
-        data["info"] = "成功审核，视频将转移至正式空间中"
+        data["info"] = "审核成功，视频将转移至正式空间中"
     else:
         data["code"] = 404
-        data["info"] = "该名称在储存空间中不存在"
+        data["info"] = "审核失败，视频不存在于该空间中"
+
     return data, data["code"]
 
 
-def delete(name, bucketname):
+def delete(name, buckets):
     '''用户或管理员删除对应视频\n
     input:\n
         name  :  视频的名称\n
+        buckets : 储存空间名称（1为正式空间，0为中转空间）\n
     output:\n    
         data : josn文件\n
         data/code : 状态码\n
@@ -123,16 +128,18 @@ def delete(name, bucketname):
         code : 状态码\n
     '''
     data = {}
+    if buckets :
+        bucketname = bucket_name
+    else:
+        bucketname = temp_bucket
     _, ret = exist(name, bucketname)
     if ret == 200:
         ret, info = bucket.delete(bucketname, name)
-        print(ret, info)
         data["code"] = 200
         data["info"] = "删除成功"
     else:
         data["code"] = 404
         data["info"] = "该名称在储存空间中不存在"
-    print(data)
     return data, data["code"]
 
 
@@ -140,7 +147,7 @@ def get(prefix, buckets):
     '''根据前缀查询对应空间中的视频\n
     input:\n
         prefix  :  视频前缀名\n
-        bucketname : 储存空间名称（1为正式空间，0为中转空间）\n
+        buckets : 储存空间名称（1为正式空间，0为中转空间）\n
     output:\n    
         data : josn文件\n
         data/code : 状态码\n
@@ -148,7 +155,7 @@ def get(prefix, buckets):
         code : 状态码\n
     '''
     data = {}
-    if buckets == 1:
+    if buckets :
         bucket_ = bucket_name
     else:
         bucket_ = temp_bucket
@@ -166,3 +173,15 @@ def get(prefix, buckets):
     data["code"] = 200
     data["bucket"] = bucket_
     return data, data["code"]
+
+
+def find_url(name,buckets):
+    if buckets:
+        bucket_domain = "s360yyqhm.hn-bkt.clouddn.com"
+        bucketname = bucket_name
+    else:
+        bucket_domain = "s3hoslajq.hn-bkt.clouddn.com"
+        bucketname = temp_bucket
+    base_url = 'http://%s/%s' % (bucket_domain, name)
+    private_url = q.private_download_url(base_url, expires=3600)
+    return bucketname,private_url

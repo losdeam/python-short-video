@@ -12,9 +12,9 @@ api = Namespace('video', description='视频管理相关接口')
 
 
 video_model = api.model('VedioModel', {
-    title: fields.String(required=True, description='视频标题'),
-    video_url: fields.String(required=True, description='视频地址'),
-    sort: fields.String(required=True, description='视频分类')
+    "title": fields.String(required=True, description='视频标题'),
+    "video_url": fields.String(required=True, description='视频地址'),
+    "sort": fields.String(required=True, description='视频分类')
 })
 
 

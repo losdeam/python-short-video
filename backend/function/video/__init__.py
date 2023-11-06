@@ -4,7 +4,7 @@ from function.sql import get_value, upload_data
 
 
 def pre(user, name):
-    return user + name
+    return user + "_" +name
 
 
 def upload_(user, video, name):
@@ -13,8 +13,6 @@ def upload_(user, video, name):
 
 
 def exist_(user, name, buckets):
-    if get_value("test", 'user', "username"):
-        print(1)
     name = pre(user, name)
     return exist(name, buckets)
 
@@ -34,5 +32,5 @@ def delete_(user, name, bucketname):
     return delete(name, bucketname)
 
 
-def get_(user, prefix, buckets):
+def get_(id,prefix, buckets):
     return get(prefix, buckets)
