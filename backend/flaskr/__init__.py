@@ -4,7 +4,7 @@ from flask_cors import CORS
 # RESTful API
 from flask_restx import Api
 # 导入需要初始化的组件
-from flaskr.extensions import db, socketio, mail, login_manager
+from flaskr.extensions import db, socketio, mail, login_manager, redis_client
 
 
 def create_app():
@@ -26,6 +26,7 @@ def create_app():
     socketio.init_app(app)
     mail.init_app(app)
     login_manager.init_app(app)
+    redis_client.init_app(app)
 
     # 导入并注册命名空间
     from . import live, database, auth, video_manage
