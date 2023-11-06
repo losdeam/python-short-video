@@ -57,7 +57,8 @@ class Upload(Resource):
         user = payload.get('id')
         name = payload.get('name')
         video = payload.get('video')
-        return upload_(user, video, name)
+        image = payload.get('image')
+        return upload_(user, video, name,image)
 
 
 @api.route('/recommend')

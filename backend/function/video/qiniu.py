@@ -32,11 +32,12 @@ def get_token(name):
     return data, data["code"]
 
 
-def upload(name, video):
+def upload(name, video,image):
     '''处理完成的视频数据,并上传到临时的储存空间中等待审核\n
     input:\n
         name  :  视频的名称\n
-        video :  二进制的视频文件\n
+        video :  网页传回的视频文件\n
+        image : 网页传回的封面文件\n
     output:\n
         data : josn文件\n
         data/ret : 储存空间中的视频信息，若无则返回NULL\n
@@ -45,18 +46,19 @@ def upload(name, video):
         code : 状态码\n
     '''
     data = {}
-    ret, info = bucket.stat(temp_bucket, name)
+    video_name = name + ".mp4"
+    image_name = name + ".jpg"
+
+    ret, info = bucket.stat(bucket_name, video_name)
+
     if not ret:
         # 可以对转码后的文件进行使用saveas参数自定义命名，当然也可以不指定文件会默认命名并保存在当前空间
-        saveas_key = urlsafe_base64_encode(f'{temp_bucket}:{name}')
-        fop = fops+'|saveas/'+saveas_key
-        # 在上传策略中指定
-        policy = {
-            'persistentOps': fop,
-            'persistentPipeline': pipeline
-        }
-        token = q.upload_token(bucket_name, name, 3600, policy)
-        ret, info = put_data(token, name, video) 
+        token_video = q.upload_token(temp_bucket, video_name, 3600)
+        ret, info = put_data(token_video, video_name, video)
+        
+        token_image = q.upload_token(temp_bucket, image_name, 3600)
+        ret, info = put_data(token_image, image_name, image) 
+        
         data["ret"] = ret
         data["code"] = 200
         data["info"] = "上传成功"
@@ -65,6 +67,7 @@ def upload(name, video):
         data["code"] = 404
         data["info"] = "已存在相同文件名的视频"
     return jsonify(data), data["code"]
+
 
 
 def exist(name, buckets):
@@ -102,11 +105,14 @@ def verify(name):
         data/info : 具体信息(str)\n
         code : 状态码\n
     '''
+    name_video = name + ".mp4"
+    name_image = name + ".jpg"
     ret, info = bucket.stat(temp_bucket, name)
     
     data = {}
     if ret :
-        ret, info = bucket.move(temp_bucket, name, bucket_name, name)
+        ret, info = bucket.move(temp_bucket, name_video, bucket_name, name_video)
+        ret, info = bucket.move(temp_bucket, name_image, bucket_name, name)
         data["code"] = 200
         data["info"] = "审核成功，视频将转移至正式空间中"
     else:
@@ -128,13 +134,16 @@ def delete(name, buckets):
         code : 状态码\n
     '''
     data = {}
+    name_video = name + ".mp4"
+    name_image = name + ".jpg"
     if buckets :
         bucketname = bucket_name
     else:
         bucketname = temp_bucket
     _, ret = exist(name, bucketname)
     if ret == 200:
-        ret, info = bucket.delete(bucketname, name)
+        ret, info = bucket.delete(bucketname, name_video)
+        ret, info = bucket.delete(bucketname, name_image)
         data["code"] = 200
         data["info"] = "删除成功"
     else:

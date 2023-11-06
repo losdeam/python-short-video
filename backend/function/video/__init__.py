@@ -7,9 +7,9 @@ def pre(user, name):
     return user + "_" +name
 
 
-def upload_(user, video, name):
+def upload_(user, video, name,image):
     name = pre(user, name)
-    return upload(name, video)
+    return upload(name, video,image)
 
 
 def exist_(user, name, buckets):
