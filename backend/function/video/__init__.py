@@ -1,21 +1,13 @@
-from .load import load
+
 from .qiniu import upload, exist, get_token, verify, delete, get
-from function.sql import get_value, upload_data
+from function.sql import get_value, upload_data, get_values
 
 
 def pre(user, name):
     return user + name
 
 
-def upload_(user, video, name):
-    name = pre(user, name)
-    return upload(name, video)
-
-
 def exist_(user, name, buckets):
-    if get_value("test", 'user', "username"):
-        print(1)
-    name = pre(user, name)
     return exist(name, buckets)
 
 
@@ -36,3 +28,16 @@ def delete_(user, name, bucketname):
 
 def get_(user, prefix, buckets):
     return get(prefix, buckets)
+
+
+def get_sort(sort):
+
+    result = get_values(sort, "sort", "video")
+    # 理论上应该按热度排序
+    # result.sort(reverse = True ,key = hot)
+    t = []
+    if result:
+        # 排序完后提取
+        for i in range(min(len(result), 50)):
+            t .append(result[i].video_url)
+    return result

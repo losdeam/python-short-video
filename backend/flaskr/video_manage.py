@@ -4,7 +4,7 @@ from flask import request, jsonify
 from flask_login import login_required, current_user  # 用户认证
 
 from flaskr.models import User, Video
-from function.video import upload_, exist_, get_token_, verify_, delete_, get_
+from function.video import upload, exist_, get_token_, verify_, delete_, get_sort, get_
 from function.recommendation.recommendation import test, recommend_tag, recommend_video
 
 
@@ -12,13 +12,24 @@ api = Namespace('video', description='视频管理相关接口')
 
 
 video_model = api.model('VedioModel', {
-    title: fields.String(required=True, description='视频标题'),
-    video_url: fields.String(required=True, description='视频地址'),
-    sort: fields.String(required=True, description='视频分类')
+    'title': fields.String(required=True, description='视频标题'),
+    'video_url': fields.String(required=True, description='视频地址'),
+    'sort': fields.String(required=True, description='视频分类')
+})
+
+all_video_model = api.clone('AllVideoModel', video_model, {
+    'user_id': fields.Integer(required=True, description='用户ID'),
+    'description': fields.String(required=True, description='视频描述'),
+    'upload_date': fields.DateTime(required=True, description='上传日期'),
+    'tags': fields.String(required=True, description='视频标签')
 })
 
 
-@api.route('/videos')
+# @api.route('/videos')
+# class AllVideos(Resource):
+
+
+@api.route('/videos/<int:id>')
 class Videos(Resource):
     def get(self):
         data = {
@@ -26,6 +37,18 @@ class Videos(Resource):
             "src": "http://s360yyqhm.hn-bkt.clouddn.com/1.mp4"
         }
         return jsonify(data)
+
+
+@api.route('/sortvideos/<string:sort>')
+class SortVideos(Resource):
+    @api.doc(description='获取对应分类的视频列表')
+    @api.marshal_with(all_video_model)
+    # @login_required
+    def get(self, sort):
+        '''
+        获取分类视频列表
+        '''
+        return get_sort(sort)
 
 
 @api.route('/token_get')
@@ -57,7 +80,8 @@ class Upload(Resource):
         user = payload.get('id')
         name = payload.get('name')
         video = payload.get('video')
-        return upload_(user, video, name)
+        sort = payload.get("sort")
+        return upload(user, video, name, sort)
 
 
 @api.route('/recommend')

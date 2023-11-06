@@ -1,7 +1,8 @@
 
-from instance.qny_config import q, bucket_name, pipeline, fops, temp_bucket, bucket
+from instance.qny_config import q, bucket_name, pipeline, fops, temp_bucket, bucket,url_formal,url_temp
 from qiniu import etag, put_data, urlsafe_base64_encode,put_file
 from flask import jsonify
+from function.sql import get_value, upload_data
 import json
 
 def get_token(name):
@@ -31,9 +32,10 @@ def get_token(name):
     return data, data["code"]
 
 
-def upload(name, video):
+def upload(user,name, video,sort):
     '''处理完成的视频数据,并上传到临时的储存空间中等待审核\n
     input:\n
+        user  : 用户id\n
         name  :  视频的名称\n
         video :  二进制的视频文件\n
     output:\n
@@ -44,6 +46,7 @@ def upload(name, video):
         code : 状态码\n
     '''
     data = {}
+    name = user + name
     if not exist(name, temp_bucket):
         # 可以对转码后的文件进行使用saveas参数自定义命名，当然也可以不指定文件会默认命名并保存在当前空间
         saveas_key = urlsafe_base64_encode(f'{temp_bucket}:{name}')
@@ -54,7 +57,8 @@ def upload(name, video):
             'persistentPipeline': pipeline
         }
         token = q.upload_token(bucket_name, name, 3600, policy)
-        # ret, info = put_data(token, name, video)
+        ret, info = put_data(token, name, video)
+        upload_data({"user_id":user,"title" : name,"video_url" : url_temp+name," sort" : sort})
         data["ret"] = None
         data["code"] = 200
         data["info"] = "上传成功"
@@ -82,7 +86,6 @@ def exist(name, buckets):
     if ret:
         data["code"] = 200
         data["info"] = "该名称在储存空间中已经存在"
-
     else:
         data["code"] = 404
         data["info"] = "该名称在储存空间中不存在"
@@ -126,13 +129,11 @@ def delete(name, bucketname):
     _, ret = exist(name, bucketname)
     if ret == 200:
         ret, info = bucket.delete(bucketname, name)
-        print(ret, info)
         data["code"] = 200
         data["info"] = "删除成功"
     else:
         data["code"] = 404
         data["info"] = "该名称在储存空间中不存在"
-    print(data)
     return data, data["code"]
 
 

@@ -61,7 +61,7 @@ def get_values(data, key, sheet):
     else:
         raise AttributeError("sheet name error")
 
-    result = db.session.execute(stmt).scalars().all()
+    result = db.session.execute(stmt).all()
 
     if result:
         return result
