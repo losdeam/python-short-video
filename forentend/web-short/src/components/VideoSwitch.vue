@@ -66,8 +66,6 @@ width: 500px;
         :modules="modules"
         direction='vertical'
         navigation
-        :pagination="{ clickable: true }"
-        :scrollbar="{ draggable: true }"
         @swiper="onSwiper"
         @slideChange="onSlideChange"
         :loop="true"
@@ -80,13 +78,13 @@ width: 500px;
 
             <swiper-slide>
                 
-                    <video-player class="videocontent" :options="videoOptions"/>
+                    <video-playerrd class="videocontent" :options="videoOptions"/>
                 
             </swiper-slide>
 
             <swiper-slide>
                 
-                    <video-player class="videocontent" :options="videoOptions"/>
+                    <video-playerth class="videocontent" :options="videoOptions"/>
                 
             </swiper-slide>
            
@@ -105,13 +103,19 @@ width: 500px;
     import 'swiper/css/scrollbar';
   
     import VideoPlayer from '@/components/VideoPlayer.vue';
+    import VideoPlayerrd from './VideoPlayerrd.vue';
+    import VideoPlayerth from './VideoPlayerth.vue';
+
 
     export default {
       components: {
-        Swiper,
-        SwiperSlide,
-        VideoPlayer,
-      },
+    Swiper,
+    SwiperSlide,
+    VideoPlayer,
+    VideoPlayerrd,
+    VideoPlayerth,
+  
+},
       data() {
     return {
         page:1,

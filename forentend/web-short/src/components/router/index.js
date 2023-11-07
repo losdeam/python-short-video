@@ -1,6 +1,8 @@
 import { createRouter,createWebHistory } from 'vue-router';
 import Layout from '@/components/Layout.vue';
 import VideoSwitch from '@/components/VideoSwitch.vue';
+import Signin from '@/components/Signin.vue';
+import Register from '@/components/Register.vue';
 
 
 const router =createRouter({
@@ -8,12 +10,23 @@ const router =createRouter({
     routes:[
         {
             path:'/',
-            component:Layout,
+            component:Signin,
         },
         {
         path:'/layout',
         component:Layout,
         name:"Layout"
+        },
+
+        {
+        path:'/register',
+        component:Register,
+        name:"Register"
+        },
+        {
+        path:'/signin',
+        component:Signin,
+        name:"Signin"
         },
         
         {

@@ -3,7 +3,7 @@
         <div class="window-body">
             <div class="body-left">
                 <div class="body-left_head">
-                    <img class="T-Logo" src="../assets/Icons/T-LOGO.svg">
+                    <RouterLink to="/layout"><img class="T-Logo" src="../assets/Icons/T-LOGO.svg"></RouterLink>
                     <div class="T-Text">光子短视频</div>
                 </div>
                 <div class="body-left_bar">
@@ -12,23 +12,23 @@
                         <div class="leftbar-items_text front">推 荐</div>
                     </div>
                     <div class="leftbar-items">
-                        <img class="leftbar-items_icons" src="../assets/Icons/whitejian.svg">
+                        <img class="leftbar-items_icons" src="../assets/Icons/hot.svg">
                         <div class="leftbar-items_text ">热 点</div>
                     </div>
                     <div class="leftbar-items">
-                        <img class="leftbar-items_icons" src="../assets/Icons/whitejian.svg">
+                        <img class="leftbar-items_icons" src="../assets/Icons/tiyu.svg">
                         <div class="leftbar-items_text ">体 育</div>
                     </div>
                     <div class="leftbar-items">
-                        <img class="leftbar-items_icons" src="../assets/Icons/whitejian.svg">
+                        <img class="leftbar-items_icons" src="../assets/Icons/dongman.svg">
                         <div class="leftbar-items_text ">动 漫</div>
                     </div>
                     <div class="leftbar-items">
-                        <img class="leftbar-items_icons" src="../assets/Icons/whitejian.svg">
+                        <img class="leftbar-items_icons" src="../assets/Icons/youxi.svg">
                         <div class="leftbar-items_text ">游 戏</div>
                     </div>
                     <div class="leftbar-items">
-                        <img class="leftbar-items_icons" src="../assets/Icons/whitejian.svg">
+                        <img class="leftbar-items_icons" src="../assets/Icons/keji.svg">
                         <div class="leftbar-items_text">科 技</div>
                     </div>
                 </div>
@@ -37,9 +37,21 @@
                 <div class="body-right_head">
                     <div></div>
                     <div class="signin">
-                        <div class="rightbar-items">1</div>
-                        <div class="rightbar-items">2</div>
-                        <div class="rightbar-items">3</div>
+                        <div class="rightbar-items">
+                            <img class="rightbar-items_icons" src="../assets/Icons/tongzhi.svg">
+                            <div class="rightbar-items_text">通知</div>
+                        </div>
+                        <div class="rightbar-items">
+                            <img class="rightbar-items_icons" src="../assets/Icons/lishi.svg">
+                            <div class="rightbar-items_text">历史</div>
+                        </div>
+                        <div class="rightbar-items">
+                            <img class="rightbar-items_icons" src="../assets/Icons/shoucang.svg">
+                            <div class="rightbar-items_text">收藏</div>
+                        </div>
+                        <div class="rightbar-items">
+                            <div class="touxiang">头像</div>
+                        </div>
                     </div>
                 </div>
                 <div class="body-right_playerarea">
@@ -56,13 +68,15 @@
 import VideoPlayer from '@/components/VideoPlayer.vue';
 import Like from '@/components/Like.vue'
 import VideoSwitch from '@/components/VideoSwitch.vue';
+import { RouterLink } from 'vue-router';
 export default {
   name: 'VideoExample',
   components: {
     VideoPlayer,
     VideoSwitch,
     Like,
-  },
+    RouterLink
+},
   data() {
     return {
       videoOptions: {
@@ -161,6 +175,26 @@ methods:{
 }
 .rightbar-items{
     margin: 20px;
+}
+.touxiang {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: #fff;
+    background: #00AEEC;
+    text-align: center;
+    letter-spacing: 0;
+    font-size: 14px;
+    line-height: 36px;
+}
+.rightbar-items_icons{
+    width: 25px;
+    height: 25px;
+    margin-left: 3px;
+}
+.rightbar-items_text{
+    font-family: "Alimamayuan";
+    font-weight: 550;
 }
 .body-right_head{
     display: flex;

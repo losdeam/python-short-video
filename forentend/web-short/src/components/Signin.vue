@@ -37,7 +37,7 @@
               </div>
               
             </form>
-                  <button  type="submit" @click.prevent="handlelogin">登录			</button>
+                  <button  type="submit" @click.prevent="handlelogin">登录</button>
                   <!-- v-on点击按钮触发handlelogin方法 -->
                   <button  @click.prevent="handleregister">注册</button>
               <router-view></router-view>

@@ -5,8 +5,6 @@
     <!-- <layout></layout> -->
     <!-- <VideoSwitch></VideoSwitch> -->
     <!-- <signin></signin> -->
-    <RouterLink to="/layout"><button></button></RouterLink>
-    <RouterLink to="/videoswitch"><button></button></RouterLink>
     <RouterView></RouterView>
     <!-- <button @click="SendRequest"></button> -->
     <!-- <div class="videoarea">
@@ -76,18 +74,7 @@ export default {
 //     // 总是会执行
 //   });
 
-// axios.post('http://159.75.106.78:50000/api/auth/captcha', {
-//     username: '12345',
-//     password: 'qwer',
-//     email:'1252742605@qq.com',
 
-//   })
-//   .then(function (response) {
-//     console.log(response);
-//   })
-//   .catch(function (error) {
-//     console.log(error);
-//   });
 </script>
 
 <style>
