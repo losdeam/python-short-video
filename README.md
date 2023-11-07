@@ -52,8 +52,8 @@ docker composee up -d
 
 
 # 四、Demo 演示视频 
-基础功能_视频地址：
-强化功能_视频地址：
+基础功能_视频地址：s360yyqhm.hn-bkt.clouddn.com/比赛视频_1.mp4
+强化功能_视频地址：s360yyqhm.hn-bkt.clouddn.com/比赛视频_2.mp4
 # 五、项目总结与反思
 
 1. 目前仍存在的问题
