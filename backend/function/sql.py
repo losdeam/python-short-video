@@ -28,9 +28,6 @@ def get_tag():
 # 获取对应tag的视频列表
 
 
-def get_video():
-    pass
-
 
 def get_value(data, key, sheet):
     '''

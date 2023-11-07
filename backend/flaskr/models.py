@@ -34,4 +34,3 @@ class Video(db.Model):
     upload_date = db.Column(db.DateTime, nullable=False,
                             default=datetime.now)
     sort = db.Column(db.String(50), nullable=False)
-    tags = db.Column(db.String(255))
