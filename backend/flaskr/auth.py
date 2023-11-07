@@ -13,8 +13,11 @@ def load_user(user_id):
     return db.session.execute(db.select(User).where(User.user_id == user_id)).scalar_one_or_none()
 
 
-user_mian_model = api.model('UserMainModel', {
+email_model = api.model('EmailModel', {
     'email': fields.String(max_length=100, required=True, description='邮箱'),
+})
+
+user_mian_model = api.clone('UserMainModel', email_model, {
     'password': fields.String(max_length=128, required=True, description='密码'),
 })
 
@@ -22,13 +25,13 @@ user_model = api.clone('UserModel', user_mian_model, {
     'username': fields.String(max_length=50, required=True, description='用户名'),
 })
 
+user_captcha_model = api.clone('UserCaptchaModel', user_model, {
+    'captcha': fields.String(max_length=4, required=True, description='验证码')
+})
+
 all_user_model = api.clone('AllUserModel', user_model, {
     'rank': fields.Integer(required=True, description='用户等级'),
     'avatar': fields.Raw(description='头像')
-})
-
-user_captcha_model = api.clone('UserCaptchaModel', user_model, {
-    'captcha': fields.String(max_length=4, required=True, description='验证码')
 })
 
 
@@ -43,7 +46,7 @@ class Captcha(Resource):
         return test_captcha()
 
     @api.doc(description='注册时，发送验证码。')
-    @api.expect(user_captcha_model, validate=True)
+    @api.expect(email_model, validate=True)
     def post(self):
         '''
         验证码发送接口

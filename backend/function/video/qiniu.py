@@ -1,8 +1,9 @@
 
 from instance.qny_config import q, bucket_name, pipeline, fops, temp_bucket, bucket
-from qiniu import etag, put_data, urlsafe_base64_encode,put_file
+from qiniu import etag, put_data, urlsafe_base64_encode, put_file
 from flask import jsonify
 import json
+
 
 def get_token(name):
     '''通过视频的名称来获取对应的token\n
@@ -18,7 +19,7 @@ def get_token(name):
     data = {}
     # 上传后保存的文件名
     key = name
-    
+
     ret, response = exist(name, temp_bucket)
     data["ret"] = ret["ret"]
     if response == 404:
@@ -32,7 +33,7 @@ def get_token(name):
     return data, data["code"]
 
 
-def upload(name, video,image):
+def upload(name, video, image):
     '''处理完成的视频数据,并上传到临时的储存空间中等待审核\n
     input:\n
         name  :  视频的名称\n
@@ -55,10 +56,10 @@ def upload(name, video,image):
         # 可以对转码后的文件进行使用saveas参数自定义命名，当然也可以不指定文件会默认命名并保存在当前空间
         token_video = q.upload_token(temp_bucket, video_name, 3600)
         ret, info = put_data(token_video, video_name, video)
-        
+
         token_image = q.upload_token(temp_bucket, image_name, 3600)
-        ret, info = put_data(token_image, image_name, image) 
-        
+        ret, info = put_data(token_image, image_name, image)
+
         data["ret"] = ret
         data["code"] = 200
         data["info"] = "上传成功"
@@ -67,7 +68,6 @@ def upload(name, video,image):
         data["code"] = 404
         data["info"] = "已存在相同文件名的视频"
     return jsonify(data), data["code"]
-
 
 
 def exist(name, buckets):
@@ -82,13 +82,14 @@ def exist(name, buckets):
         code : 状态码\n
     '''
 
-    bucketname,private_url = find_url(name, buckets)
+    bucketname, private_url_video, private_url_image = find_url(name, buckets)
     data = {}
     ret, info = bucket.stat(bucketname, name)
     data["ret"] = ret
     if ret:
         data["code"] = 200
-        data["info"] = private_url
+        data["url_video"] = private_url_video
+        data["url_image"] = private_url_image
     else:
         data["code"] = 404
         data["info"] = "该名称在储存空间中不存在"
@@ -108,10 +109,11 @@ def verify(name):
     name_video = name + ".mp4"
     name_image = name + ".jpg"
     ret, info = bucket.stat(temp_bucket, name)
-    
+
     data = {}
-    if ret :
-        ret, info = bucket.move(temp_bucket, name_video, bucket_name, name_video)
+    if ret:
+        ret, info = bucket.move(temp_bucket, name_video,
+                                bucket_name, name_video)
         ret, info = bucket.move(temp_bucket, name_image, bucket_name, name)
         data["code"] = 200
         data["info"] = "审核成功，视频将转移至正式空间中"
@@ -136,7 +138,7 @@ def delete(name, buckets):
     data = {}
     name_video = name + ".mp4"
     name_image = name + ".jpg"
-    if buckets :
+    if buckets:
         bucketname = bucket_name
     else:
         bucketname = temp_bucket
@@ -164,7 +166,7 @@ def get(prefix, buckets):
         code : 状态码\n
     '''
     data = {}
-    if buckets :
+    if buckets:
         bucket_ = bucket_name
     else:
         bucket_ = temp_bucket
@@ -184,13 +186,18 @@ def get(prefix, buckets):
     return data, data["code"]
 
 
-def find_url(name,buckets):
+def find_url(name, buckets):
     if buckets:
         bucket_domain = "s360yyqhm.hn-bkt.clouddn.com"
         bucketname = bucket_name
     else:
         bucket_domain = "s3hoslajq.hn-bkt.clouddn.com"
         bucketname = temp_bucket
-    base_url = 'http://%s/%s' % (bucket_domain, name)
-    private_url = q.private_download_url(base_url, expires=3600)
-    return bucketname,private_url
+    name_video = name + ".mp4"
+    name_image = name + ".jpg"
+    base_url_video = 'http://%s/%s' % (bucket_domain, name_video)
+    base_url_image = 'http://%s/%s' % (bucket_domain, name_image)
+
+    private_url_video = q.private_download_url(base_url_video, expires=3600)
+    private_url_image = q.private_download_url(base_url_image, expires=3600)
+    return bucketname, private_url_video, private_url_image

@@ -19,8 +19,6 @@ def recommend_tag(user):
     pass
 
 # 在获取对应tag的视频列表后根据svd来预测，最高值则为推荐视频
-
-
 def recommend_video(user):
     id = user['id']
     if model_exist(id):

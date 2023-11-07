@@ -65,30 +65,29 @@ width: 500px;
         <swiper
         :modules="modules"
         direction='vertical'
-    navigation
-    :pagination="{ clickable: true }"
-    :scrollbar="{ draggable: true }"
-    @swiper="onSwiper"
-    @slideChange="onSlideChange"
-    :loop="true"
+        navigation
+        :pagination="{ clickable: true }"
+        :scrollbar="{ draggable: true }"
+        @swiper="onSwiper"
+        @slideChange="onSlideChange"
+        :loop="true"
         class="area"
+        :options="swiperOptions"
         >
             <swiper-slide>
-                <div class="content-red">
-                    <video-player :options="videoOptions"/>
-                </div>
+                    <video-player class="videocontent" :options="videoOptions"/>
             </swiper-slide>
+
             <swiper-slide>
-                <div class="content-blue">
-                    <div></div>
-                    <video-player :options="videoOptions"/>
-                </div>
+                
+                    <video-player class="videocontent" :options="videoOptions"/>
+                
             </swiper-slide>
+
             <swiper-slide>
-                <div class="content-green">
-                    <div></div>
-                    <video-player :options="videoOptions"/>
-                </div>
+                
+                    <video-player class="videocontent" :options="videoOptions"/>
+                
             </swiper-slide>
            
         </swiper>
@@ -115,6 +114,8 @@ width: 500px;
       },
       data() {
     return {
+        page:1,
+
       videoOptions: {
         autoplay: false,
         controls: true,
@@ -125,44 +126,75 @@ width: 500px;
         //       type: 'video/mp4',
         //   }
         // ]
-      }
+      },
+
+    //   swiperOptions: {
+    //   // swiper组件提供的方法
+    //   on: {
+    //     tap: () => {
+    //       // this.playAction(this.page - 1);
+    //       console.log('点击: ', this.page);
+    //     },
+    //     slidePrevTransitionStart: () => {
+    //       if (this.page > 1) {
+    //         this.page -= 1;
+    //       }
+    //       // this.playAction(this.page - 1);
+    //       console.log('下拉：', this.page);
+    //     },
+    //     slideNextTransitionStart: () => {
+    //       this.page += 1;
+    //       // this.playAction(this.page - 1);
+    //       console.log('上滑：', this.page);
+    //     },
+    //   },
+    // },
+      
     };
   },
-      setup() {
-        const onSwiper = (swiper) => {
-          console.log(swiper);
-        };
-        const onSlideChange = () => {
-          console.log('slide change');
-        };
-        return {
-          onSwiper,
-          onSlideChange,
-          modules: [Navigation, Pagination, Scrollbar, A11y],
-        };
-      },
-    };
+  setup() {
+      const onSwiper = (swiper) => {
+        console.log(swiper);
+      };
+      const onSlideChange = () => {
+        console.log('slide change');
+      };
+      return {
+        onSwiper,
+        onSlideChange,
+        modules: [Navigation, Pagination, Scrollbar, A11y],
+      };
+    },
+
+
+
+    }
+			
+	
   </script>
 
   <style>
 .area{
-    height: 600px;
-    width: 600px;
+    height:800px;
+    width:1000px;
     background-color: bisque;
 }
+.videocontent{
+  margin:200px 100px;
+}
 .content-red{
-    height: 400px;
-    width: 400px;
+    height: 600px;
+    width: 600px;
     background-color: red;
 }
 .content-blue{
-    height: 400px;
-    width: 400px;
+    height: 600px;
+    width: 600px;
     background-color: blue;
 }
 .content-green{
-    height: 400px;
-    width: 400px;
+    height: 600px;
+    width: 600px;
     background-color: green;
 }
 

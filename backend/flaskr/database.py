@@ -14,9 +14,9 @@ class Create(Resource):
         '''
         try:
             db.create_all()
-            return 200
+            return {'message': '创建成功'}, 200
         except:
-            return 500
+            return {'message': '创建失败'}, 500
 
 
 @api.route('/drop')
@@ -28,6 +28,6 @@ class Drop(Resource):
         """
         try:
             db.drop_all()
-            return 200
+            return {'message': '删库成功'}, 200
         except:
-            return 500
+            return {'message': '删库成功'}, 200

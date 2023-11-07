@@ -9,7 +9,7 @@
                     <div class="leftbar-items front">推 荐</div>
                     <div class="leftbar-items">热 点</div>
                     <div class="leftbar-items">体 育</div>
-                    <div class="leftbar-items">娱 乐</div>
+                    <div class="leftbar-items">动 漫</div>
                     <div class="leftbar-items">游 戏</div>
                     <div class="leftbar-items">科 技</div>
                 </div>
@@ -30,6 +30,7 @@
                             <video-player :options="videoOptions"/> 
                         </div>
                     </div>
+                    <button class="bu" @click="Click"></button>
                 </div>
                 <div class="switchbutton"></div>
             </div>
@@ -38,6 +39,7 @@
 </template>
 <script>
 import VideoPlayer from '@/components/VideoPlayer.vue';
+
 
 // import switchvideo from './switchvideo.vue';
 export default {
@@ -59,7 +61,15 @@ export default {
         // ]
       }
     };
-  }
+  },
+methods:{
+    Click(){
+        console.log(1)
+        
+    }
+    
+}
+
 };
 </script>
 <style scoped>
@@ -126,6 +136,12 @@ width: 100%;
       align-items: center;
       margin: 20px;
       }
+
+
+button{
+    height: 100px;
+    width: 100px;
+}      
 body{
     margin: 0;
     padding: 0;

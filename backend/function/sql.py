@@ -28,9 +28,6 @@ def get_tag():
 # 获取对应tag的视频列表
 
 
-def get_video():
-    pass
-
 
 def get_value(data, key, sheet):
     '''
@@ -61,7 +58,7 @@ def get_values(data, key, sheet):
     else:
         raise AttributeError("sheet name error")
 
-    result = db.session.execute(stmt).scalars().all()
+    result = db.session.execute(stmt).all()
 
     if result:
         return result

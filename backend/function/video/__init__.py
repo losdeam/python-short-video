@@ -1,20 +1,14 @@
-from .load import load
-from .qiniu import upload, exist, get_token, verify, delete, get
-from function.sql import get_value, upload_data
+from .qiniu import upload, get_token, verify, delete, get
+from .video import get_sort, get_video
 
 
 def pre(user, name):
-    return user + "_" +name
+    return user + "_" + name
 
 
-def upload_(user, video, name,image):
+def upload_(user, video, name, image):
     name = pre(user, name)
-    return upload(name, video,image)
-
-
-def exist_(user, name, buckets):
-    name = pre(user, name)
-    return exist(name, buckets)
+    return upload(name, video, image)
 
 
 def get_token_(user, name):
@@ -32,5 +26,5 @@ def delete_(user, name, bucketname):
     return delete(name, bucketname)
 
 
-def get_(id,prefix, buckets):
+def get_(id, prefix, buckets):
     return get(prefix, buckets)

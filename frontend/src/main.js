@@ -2,11 +2,11 @@
 
 import { createApp } from 'vue'
 import App from './App.vue'
-
-
-// import videojs from "video.js";
+import router from'../src/components/router'
 import "video.js/dist/video-js.css";
-// Vue.prototype.$video = videojs;
 
+const app = createApp(App)
 
-createApp(App).mount('#app')
+app.use(router)
+
+app.mount('#app')
