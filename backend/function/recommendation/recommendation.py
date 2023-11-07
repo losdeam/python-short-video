@@ -2,7 +2,7 @@
 
 from surprise import accuracy, dump, SVD
 from surprise.model_selection import KFold
-from .data_processing import dataread
+# from .data_processing import dataread
 import os
 
 
