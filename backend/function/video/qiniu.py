@@ -108,14 +108,13 @@ def verify(name):
     '''
     name_video = name + ".mp4"
     name_image = name + ".jpg"
-    ret, info = bucket.stat(temp_bucket, name_video)
+    ret, info = bucket.stat(temp_bucket, name)
 
     data = {}
     if ret:
         ret, info = bucket.move(temp_bucket, name_video,
                                 bucket_name, name_video)
-        ret, info = bucket.move(temp_bucket, name_image,
-                                bucket_name, name_image)
+        ret, info = bucket.move(temp_bucket, name_image, bucket_name, name)
         data["code"] = 200
         data["info"] = "审核成功，视频将转移至正式空间中"
     else:
