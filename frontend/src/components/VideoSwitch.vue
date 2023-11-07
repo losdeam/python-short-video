@@ -62,141 +62,134 @@ width: 500px;
 
 <template>
     <div class="area">
-        <swiper
-        :modules="modules"
-        direction='vertical'
-        navigation
-        :pagination="{ clickable: true }"
-        :scrollbar="{ draggable: true }"
-        @swiper="onSwiper"
-        @slideChange="onSlideChange"
-        :loop="true"
-        class="area"
-        :options="swiperOptions"
-        >
+        <swiper :modules="modules" direction='vertical' navigation :pagination="{ clickable: true }"
+            :scrollbar="{ draggable: true }" @swiper="onSwiper" @slideChange="onSlideChange" :loop="true" class="area"
+            :options="swiperOptions">
             <swiper-slide>
-                    <video-player class="videocontent" :options="videoOptions"/>
+                <video-player class="videocontent" :options="videoOptions" />
             </swiper-slide>
 
             <swiper-slide>
-                
-                    <video-player class="videocontent" :options="videoOptions"/>
-                
+
+                <video-player class="videocontent" :options="videoOptions" />
+
             </swiper-slide>
 
             <swiper-slide>
-                
-                    <video-player class="videocontent" :options="videoOptions"/>
-                
+
+                <video-player class="videocontent" :options="videoOptions" />
+
             </swiper-slide>
-           
+
         </swiper>
     </div>
-  </template>
-  <script>
-    import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
-    // Import Swiper Vue.js components
-    import { Swiper, SwiperSlide } from 'swiper/vue';
-  
-    // Import Swiper styles
-    import 'swiper/css';
-    import 'swiper/css/navigation';
-    import 'swiper/css/pagination';
-    import 'swiper/css/scrollbar';
-  
-    import VideoPlayer from '@/components/VideoPlayer.vue';
+</template>
+<script>
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+// Import Swiper Vue.js components
+import { Swiper, SwiperSlide } from 'swiper/vue';
 
-    export default {
-      components: {
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+
+import VideoPlayer from '@/components/VideoPlayer.vue';
+
+export default {
+    components: {
         Swiper,
         SwiperSlide,
         VideoPlayer,
-      },
-      data() {
-    return {
-        page:1,
+    },
+    data() {
+        return {
+            page: 1,
 
-      videoOptions: {
-        autoplay: false,
-        controls: true,
-        // sources: [
-        //   {
-        //     src:
-        //       'http://s360yyqhm.hn-bkt.clouddn.com/1.mp4',
-        //       type: 'video/mp4',
-        //   }
-        // ]
-      },
+            videoOptions: {
+                autoplay: false,
+                controls: true,
+                // sources: [
+                //   {
+                //     src:
+                //       'http://s360yyqhm.hn-bkt.clouddn.com/1.mp4',
+                //       type: 'video/mp4',
+                //   }
+                // ]
+            },
 
-    //   swiperOptions: {
-    //   // swiper组件提供的方法
-    //   on: {
-    //     tap: () => {
-    //       // this.playAction(this.page - 1);
-    //       console.log('点击: ', this.page);
-    //     },
-    //     slidePrevTransitionStart: () => {
-    //       if (this.page > 1) {
-    //         this.page -= 1;
-    //       }
-    //       // this.playAction(this.page - 1);
-    //       console.log('下拉：', this.page);
-    //     },
-    //     slideNextTransitionStart: () => {
-    //       this.page += 1;
-    //       // this.playAction(this.page - 1);
-    //       console.log('上滑：', this.page);
-    //     },
-    //   },
-    // },
-      
-    };
-  },
-  setup() {
-      const onSwiper = (swiper) => {
-        console.log(swiper);
-      };
-      const onSlideChange = () => {
-        console.log('slide change');
-      };
-      return {
-        onSwiper,
-        onSlideChange,
-        modules: [Navigation, Pagination, Scrollbar, A11y],
-      };
+            //   swiperOptions: {
+            //   // swiper组件提供的方法
+            //   on: {
+            //     tap: () => {
+            //       // this.playAction(this.page - 1);
+            //       console.log('点击: ', this.page);
+            //     },
+            //     slidePrevTransitionStart: () => {
+            //       if (this.page > 1) {
+            //         this.page -= 1;
+            //       }
+            //       // this.playAction(this.page - 1);
+            //       console.log('下拉：', this.page);
+            //     },
+            //     slideNextTransitionStart: () => {
+            //       this.page += 1;
+            //       // this.playAction(this.page - 1);
+            //       console.log('上滑：', this.page);
+            //     },
+            //   },
+            // },
+
+        };
+    },
+    setup() {
+        const onSwiper = (swiper) => {
+            console.log(swiper);
+        };
+        const onSlideChange = () => {
+            console.log('slide change');
+        };
+        return {
+            onSwiper,
+            onSlideChange,
+            modules: [Navigation, Pagination, Scrollbar, A11y],
+        };
     },
 
 
 
-    }
-			
-	
-  </script>
+}
 
-  <style>
-.area{
-    height:800px;
-    width:1000px;
+
+</script>
+
+<style>
+.area {
+    height: 800px;
+    width: 1000px;
     background-color: bisque;
 }
-.videocontent{
-  margin:200px 100px;
+
+.videocontent {
+    margin: 200px 100px;
 }
-.content-red{
+
+.content-red {
     height: 600px;
     width: 600px;
     background-color: red;
 }
-.content-blue{
+
+.content-blue {
     height: 600px;
     width: 600px;
     background-color: blue;
 }
-.content-green{
+
+.content-green {
     height: 600px;
     width: 600px;
     background-color: green;
 }
-
-
 </style>
