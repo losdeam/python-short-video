@@ -1,0 +1,12 @@
+@font-face {
+    font-family: Alimamayuan;
+    src: url('./AlimamaFangYuanTiVF-Thin.ttf');
+    font-weight: 300;
+    font-size: small;
+}
+@font-face {
+    font-family: Alimamashu;
+    src: url('./AlimamaShuHeiTi-Bold.ttf');
+    font-weight: 800;
+    font-size: large;
+}

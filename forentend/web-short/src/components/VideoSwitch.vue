@@ -176,8 +176,8 @@ width: 500px;
   <style>
 .area{
     height:800px;
-    width:1000px;
-    background-color: bisque;
+    width:1250px;
+    background:  rgb(22, 24, 35);;
 }
 .videocontent{
   margin:200px 100px;

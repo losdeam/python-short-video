@@ -7,7 +7,7 @@
       <!-- <video ref="videoPlayer" class="video-js">
         <source src="/src/assets/naitang.mp4" type="video/mp4" />
       </video> -->
-      <button @click="click_switch"></button>
+      <!-- <button @click="click_switch"></button> -->
     </div>
   </template>
   
@@ -52,8 +52,9 @@ import videojs from 'video.js';
 
 <style scoped>
 .video-js{
-  width: 700px;
+  width: 800px;
   height: 500px;
+  border-radius: 3%;
   
 }
 button{

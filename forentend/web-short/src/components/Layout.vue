@@ -3,20 +3,39 @@
         <div class="window-body">
             <div class="body-left">
                 <div class="body-left_head">
-                    <img src="../assets/xiazai.png">
+                    <img class="T-Logo" src="../assets/Icons/T-LOGO.svg">
+                    <div class="T-Text">光子短视频</div>
                 </div>
                 <div class="body-left_bar">
-                    <div class="leftbar-items front">推 荐</div>
-                    <div class="leftbar-items">热 点</div>
-                    <div class="leftbar-items">体 育</div>
-                    <div class="leftbar-items">动 漫</div>
-                    <div class="leftbar-items">游 戏</div>
-                    <div class="leftbar-items">科 技</div>
+                    <div class="leftbar-items">
+                        <img class="leftbar-items_icons" src="../assets/Icons/whitejian.svg">
+                        <div class="leftbar-items_text front">推 荐</div>
+                    </div>
+                    <div class="leftbar-items">
+                        <img class="leftbar-items_icons" src="../assets/Icons/whitejian.svg">
+                        <div class="leftbar-items_text ">热 点</div>
+                    </div>
+                    <div class="leftbar-items">
+                        <img class="leftbar-items_icons" src="../assets/Icons/whitejian.svg">
+                        <div class="leftbar-items_text ">体 育</div>
+                    </div>
+                    <div class="leftbar-items">
+                        <img class="leftbar-items_icons" src="../assets/Icons/whitejian.svg">
+                        <div class="leftbar-items_text ">动 漫</div>
+                    </div>
+                    <div class="leftbar-items">
+                        <img class="leftbar-items_icons" src="../assets/Icons/whitejian.svg">
+                        <div class="leftbar-items_text ">游 戏</div>
+                    </div>
+                    <div class="leftbar-items">
+                        <img class="leftbar-items_icons" src="../assets/Icons/whitejian.svg">
+                        <div class="leftbar-items_text">科 技</div>
+                    </div>
                 </div>
             </div>
             <div class="body-right">
                 <div class="body-right_head">
-                    <div>111111111111111111111</div>
+                    <div></div>
                     <div class="signin">
                         <div class="rightbar-items">1</div>
                         <div class="rightbar-items">2</div>
@@ -25,27 +44,24 @@
                 </div>
                 <div class="body-right_playerarea">
                     <div class="videoarea">
-                        <div class="video-content">
-                            <video-player :options="videoOptions"/> 
-                            <video-player :options="videoOptions"/> 
-                        </div>
+                            <video-switch class="video_switch"></video-switch>
                     </div>
-                    <button class="bu" @click="Click"></button>
+                    <div class="switchbutton"></div>
                 </div>
-                <div class="switchbutton"></div>
             </div>
         </div>
     </div>
 </template>
 <script>
 import VideoPlayer from '@/components/VideoPlayer.vue';
-
-
-// import switchvideo from './switchvideo.vue';
+import Like from '@/components/Like.vue'
+import VideoSwitch from '@/components/VideoSwitch.vue';
 export default {
   name: 'VideoExample',
   components: {
     VideoPlayer,
+    VideoSwitch,
+    Like,
   },
   data() {
     return {
@@ -90,29 +106,57 @@ methods:{
     flex-shrink: 0;
     position: relative;
     --container-background: linear-gradient(180deg,#060716 80%,#06071600);
+    /* background-image: linear-gradient(109.6deg, rgb(0, 51, 102) 11.2%, rgb(187, 187, 187) 91.1%); */
 }
 
 .body-left_head{
+    display: flex;
     height: 68px;
     position: relative;
-    background-color: bisque;
+    background-color:rgb(238, 234, 234);
+}
+
+.T-Logo{
+    width: 54px;
+    height: 60px;
+}
+.T-Text{
+    text-align: center;
+    margin-top: 20px;
+    margin-right: 10px;
+    margin-left: 5px;
+    font-family: "Alimamashu";
+    font-size: 24px;
 }
 .leftbar-items{
+    display:flex;
+}
+.leftbar-items_icons{
+    width: 25px;
+    height: 25px;
+    margin-top: 30px;
+    margin-left: 30px;
+    margin-right: 20px;
+    
+}
+.leftbar-items_text{
     color: whitesmoke;
     margin: 30px;
-    margin-left: 50px;
+    margin-left: 0;
+    font-family: "Alimamayuan";
+    font-size: 20px;
 }
 .front{
     margin-bottom: 100px;
 }
 .body-right{
-background-color: blue;
-width: 100%;
+    background-color:  rgb(22, 24, 35);
+    width: 100%;
 
 }
 .signin{
    display: flex;
-   background-color: blueviolet;
+   background-color:rgb(238, 234, 234);
 
 }
 .rightbar-items{
@@ -121,9 +165,19 @@ width: 100%;
 .body-right_head{
     display: flex;
     height: 68px;
-    background-color: aqua;
+    background-color:rgb(238, 234, 234);
     justify-content: space-between;
     flex: 1;
+}
+.body-right_playerarea{
+    display: flex;
+    width: 1300px;
+    flex: 1;
+}
+
+.switchbutton{
+    width: 50px;
+    background-color:  rgb(22, 24, 35);
 }
 .videoarea{
   text-align: center;
