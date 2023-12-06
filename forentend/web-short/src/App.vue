@@ -40,7 +40,7 @@ export default {
   methods:{
     SendRequest(){
       axios.post('http://159.75.106.78:50000/api/auth/captcha', {
-    username: '12345',
+    username: '1234',
     password: 'qwer',
     email:'1252742605@qq.com',
     captcha:''
